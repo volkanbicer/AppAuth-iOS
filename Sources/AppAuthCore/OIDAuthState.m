@@ -506,7 +506,17 @@ static const NSUInteger kExpiryTimeTolerance = 60;
          additionalRefreshParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue {
+  [self performActionWithFreshTokens:action
+         additionalRefreshParameters:additionalParameters
+                       dispatchQueue:dispatchQueue
+         additionalHeaderParameters:nil];
+}
 
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:(NSDictionary<NSString *,NSString *> *)additionalParameters
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue
+         additionalHeaderParameters:(NSDictionary<NSString *,NSString *> *)addtionalHeaders {
+  // Unified implementation for both methods
   if ([self isTokenFresh]) {
     // access token is valid within tolerance levels, perform action
     dispatch_async(dispatchQueue, ^{
@@ -544,7 +554,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
   // refresh the tokens
   OIDTokenRequest *tokenRefreshRequest =
-      [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
+      [self tokenRefreshRequestWithAdditionalParameters:additionalParameters additionalHeaders:addtionalHeaders];
   [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
                  originalAuthorizationResponse:_lastAuthorizationResponse
                                       callback:^(OIDTokenResponse *_Nullable response,

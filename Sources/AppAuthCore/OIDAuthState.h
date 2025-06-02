@@ -248,6 +248,14 @@ static NSString *const kRefreshTokenRequestException =
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue;
 
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue
+          additionalHeaderParameters:(nullable NSDictionary<NSString *,NSString *> *) addtionalHeaders;
+
+
+
 /*! @brief Forces a token refresh the next time @c OIDAuthState.performActionWithFreshTokens: is
         called, even if the current tokens are considered valid.
  */
